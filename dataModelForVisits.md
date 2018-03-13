@@ -18,13 +18,13 @@ but not necessarily part of the graph..
 focus my attention, so this may be rendered in a light font and/or is easily removed/hidden;  whereas something like the H&P
 or Daily Progress Notes are rendered as either BIGGER nodes and/or different color/etc.  
     
-# Basic Implementation  
+## Basic Implementation  
    In this instance, we have firstDate and generate a large Node for each Day; 
    each day is connected to the next day  
    Now each primary node (i.e. day) is then connected to each individual note  
    notes that are addenda are attached to their parentNote  
   
-##Fun Use Cases:  
+## Fun Use Cases:  
 We could add an extra node for a cosigner, that is a different shape, and the "spring" or distance between it and the
 parent document is a function of the time between the document being saved and the person signing it.  
   
