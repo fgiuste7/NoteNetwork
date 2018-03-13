@@ -1,0 +1,128 @@
+{
+	"nodes": [
+		{ 
+			"id": "Note_1",
+			"group": 1,
+			"EncounterDateTime": "2010-01-01T18:30:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1001,
+			"ParentDocumentID": -1,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-01-01T19:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "blue",
+			"nodeSize": "Large",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_2",
+			"group": 1,
+			"EncounterDateTime": "2010-02-01T18:30:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1002,
+			"ParentDocumentID": 1001,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-02-01T20:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "blue",
+			"nodeSize": "Small",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_3",
+			"group": 1,
+			"EncounterDateTime": "2010-03-01T12:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1003,
+			"ParentDocumentID": -1,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-03-01T13:00:00Z",
+			"renderType": "Important",
+			"nodeColor": "green",
+			"nodeSize": "Large",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_4",
+			"group": 2,
+			"EncounterDateTime": "2010-04-01T12:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1004,
+			"ParentDocumentID": -1,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-04-01T12:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "red",
+			"nodeSize": "Large",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_5",
+			"group": 2,
+			"EncounterDateTime": "2010-04-01T13:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1005,
+			"ParentDocumentID": 1004,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-04-01T13:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "red",
+			"nodeSize": "Small",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_6",
+			"group": 2,
+			"EncounterDateTime": "2010-04-01T18:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1006,
+			"ParentDocumentID": 1004,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-04-01T18:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "red",
+			"nodeSize": "Small",
+			"nodeShape": "Circle"
+		},
+
+		{ 
+			"id": "Note_7",
+			"group": 3,
+			"EncounterDateTime": "2010-05-01T12:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1007,
+			"ParentDocumentID": -1,
+			"AuthorName": "Doctor-1",
+			"CosignatureDateTime": "2010-05-01T12:30:00Z",
+			"renderType": "Ignore",
+			"nodeColor": "orange",
+			"nodeSize": "Large",
+			"nodeShape": "Square"
+		},
+
+		{ 
+			"id": "Note_8",
+			"group": 4,
+			"EncounterDateTime": "2010-05-01T13:00:00Z",
+			"DocumentName": "NoteTitle-1",
+			"DocumentID": 1008,
+			"ParentDocumentID": -1,
+			"AuthorName": "Doctor-2",
+			"CosignatureDateTime": "2010-05-01T13:30:00Z",
+			"renderType": "Important",
+			"nodeColor": "blue",
+			"nodeSize": "Large",
+			"nodeShape": "Square"
+		}
+	],
+	"links": [
+		{ "source": "Note_2", "target": "Note_1", "strength": 0.9 },
+		{ "source": "Note_5", "target": "Note_4", "strength": 0.9 },
+		{ "source": "Note_6", "target": "Note_4", "strength": 0.9 }
+	]
+}

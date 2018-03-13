@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 1;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+
+.node text {
+  pointer-events: none;
+  font: 20px sans-serif;
+}
+
+</style>
+<svg width="960" height="600"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+  var radius = 10;
+
+  var svg = d3.select("svg"),
+  width = +svg.attr("width"),
+  height = +svg.attr("height");
+
+  var simulation = d3.forceSimulation()
+  .force("link", d3.forceLink().id(function(d) { return d.id; }))
+  .force("charge", d3.forceManyBody().strength(-10))
+  .force("center", d3.forceCenter(width / 2, height / 2))
+
+// d3.json uses a large function, watch for brackets
+d3.json("./data/notes.json", function(error, graph) {
+  if (error) throw error;
+
+  var link = svg.append("g")
+  .attr("class", "links")
+  .selectAll("line")
+  .data(graph.links)
+  .enter().append("line")
+  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+  var node = svg.append("g")
+  .attr("class", "nodes")
+  .selectAll("circle")
+  .data(graph.nodes)
+  .enter().append("circle")
+  .attr("r", radius)
+  .attr("fill", function(d) { return d.nodeColor; })
+  .on("mouseover", handleMouseOver) // Mousover gives more info
+  .on("mouseout", handleMouseOut) //
+  .call(d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended));
+
+  var text = svg.append("g")
+  .selectAll("text")
+  .data(graph.nodes)
+  .enter().append("text");
+
+  var labels = text
+  .text( function (d) { return d.id; });
+
+  simulation
+  .nodes(graph.nodes)
+  .on("tick", ticked)
+  .force("link")
+  .links(graph.links);
+
+
+// ticked within d3.json function
+function ticked() {
+  link
+  .attr("x1", function(d) { return d.source.x; })
+  .attr("y1", function(d) { return d.source.y; })
+  .attr("x2", function(d) { return d.target.x; })
+  .attr("y2", function(d) { return d.target.y; });
+
+  node
+  .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+  .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+
+  labels
+  .attr("x", function(d) { return d.x = -radius+Math.max(radius, Math.min(width - radius, d.x)); })
+  .attr("y", function(d) { return d.y = -radius+Math.max(radius, Math.min(height - radius, d.y)); });
+}
+
+
+
+});
+
+// Outside of d3.json object
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
+
+
+function handleMouseOver(d, i) {  
+  d3.select(this)
+  .attr("fill", d3.hsl(d.nodeColor).brighter(1.5))
+  .attr("r", radius*3);
+
+  svg.append("text")
+  .attr("id", "t"+7) //Arbitrary label to delete afterwards
+  .attr("x", -2*radius+d.x)
+  .attr("y", 5*radius+d.y)
+  .text(d.AuthorName);
+}
+
+function handleMouseOut(d, i) {
+d3.select(this)
+  .attr("fill", function(d) { return d.nodeColor; })
+  .attr("r", radius)
+
+d3.select("#t7")
+  .remove();  
+}
+
+</script>
