@@ -23,15 +23,20 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-  var radius = 10;
+  var radius = 15;
 
   var svg = d3.select("svg"),
   width = +svg.attr("width"),
   height = +svg.attr("height");
 
+  var linkForce = d3
+  .forceLink()
+  .id(function(link) { return link.id  })
+  .strength(function(link) { return link.strength  })
+
   var simulation = d3.forceSimulation()
-  .force("link", d3.forceLink().id(function(d) { return d.id; }))
-  .force("charge", d3.forceManyBody().strength(-10))
+  .force("link", linkForce)
+  .force("charge", d3.forceManyBody().strength(-50))
   .force("center", d3.forceCenter(width / 2, height / 2))
 
 // d3.json uses a large function, watch for brackets
@@ -45,33 +50,34 @@ d3.json("./data/notes.json", function(error, graph) {
   .enter().append("line")
   .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
-  var node = svg.append("g")
-  .attr("class", "nodes")
-  .selectAll("circle")
-  .data(graph.nodes)
-  .enter().append("circle")
-  .attr("r", radius)
-  .attr("fill", function(d) { return d.nodeColor; })
-  .on("mouseover", handleMouseOver) // Mousover gives more info
+    var node = svg.append("g")
+    .attr("class", "nodes")
+    .selectAll("circle")
+    .data(graph.nodes)
+    .enter().append("circle")
+    .attr("r", radius)
+    .attr("fill", function(d) { return d.nodeColor; })
+    .attr("group", function(d) { return d.group; })
+  .on("mouseover", handleMouseOver) // Mouseover gives more info
   .on("mouseout", handleMouseOut) //
+  .on('click', selectNode)
   .call(d3.drag()
     .on("start", dragstarted)
     .on("drag", dragged)
     .on("end", dragended));
 
-  var text = svg.append("g")
+  var labels = svg.append("g")
   .selectAll("text")
   .data(graph.nodes)
-  .enter().append("text");
-
-  var labels = text
+  .enter().append("text")
+  .attr("group", function(d) { return d.group; })
   .text( function (d) { return d.id; });
 
-  simulation
-  .nodes(graph.nodes)
-  .on("tick", ticked)
-  .force("link")
-  .links(graph.links);
+    simulation
+    .nodes(graph.nodes)
+    .on("tick", ticked)
+    .force("link")
+    .links(graph.links);
 
 
 // ticked within d3.json function
@@ -91,8 +97,6 @@ function ticked() {
   .attr("y", function(d) { return d.y = -radius+Math.max(radius, Math.min(height - radius, d.y)); });
 }
 
-
-
 });
 
 // Outside of d3.json object
@@ -108,31 +112,63 @@ function dragged(d) {
 }
 
 function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
+  if (!d3.event.active) { 
+    simulation.alphaTarget(0)
+    d.fx = null
+    d.fy = null
+  }
 }
 
 
-function handleMouseOver(d, i) {  
-  d3.select(this)
-  .attr("fill", d3.hsl(d.nodeColor).brighter(1.5))
-  .attr("r", radius*3);
+var selectedId = 0;
+function selectNode(d) {
+  if (selectedId === d.id) {
+    selectedId = 0;
+    d3.selectAll("#t7").remove();
+  } else {
+    selectedId = d.id
+    selectedGroup = d.group
+    
+    d3.selectAll('circle')
+    .filter(function(g, i) { return g.group !== selectedGroup; })
+    .remove();
 
+    d3.selectAll('line')
+    .filter(function(f, i) {
+      if(  (f.source.group == selectedGroup) && (f.target.group == selectedGroup) ){ return false; 
+      } else { return true; } })
+    .remove();
+
+    d3.selectAll('text')
+    .filter(function(e) { 
+      if(e === undefined){return false;}
+      return e.group !== selectedGroup; })
+    .remove();
+    
+    showLabel(d);
+
+  }
+}
+
+function showLabel(d) {
   svg.append("text")
   .attr("id", "t"+7) //Arbitrary label to delete afterwards
-  .attr("x", -2*radius+d.x)
+  .attr("group", d.group )
+  .attr("x", -1*radius+d.x)
   .attr("y", 5*radius+d.y)
   .text(d.AuthorName);
 }
 
-function handleMouseOut(d, i) {
-d3.select(this)
-  .attr("fill", function(d) { return d.nodeColor; })
-  .attr("r", radius)
+function handleMouseOver(d, i) {  
+  d3.select(this)
+  .attr("fill", d3.hsl(d.nodeColor).brighter(1.5))
+  .attr("r", radius*3); 
+}
 
-d3.select("#t7")
-  .remove();  
+function handleMouseOut(d, i) {
+  d3.select(this)
+  .attr("fill", function(d) { return d.nodeColor; })
+  .attr("r", radius);
 }
 
 </script>

@@ -1,13 +1,7 @@
-export function linkGenerator(nodes) {
-  for(n in nodes) {
-    linksObject = [];
-    source = n.DocumentID;
-    target = n.ParentDocumentID;
+import "linkWeights.js";
 
-    if(source != target){
-      strength = Math.abs();
-      newLink = {target: target, source: source, strength: };
-      linksObject.push();
+export function linkGenerator(nodes) {
+  
 
     } 
   }

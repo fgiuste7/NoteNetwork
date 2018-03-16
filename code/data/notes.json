@@ -121,8 +121,8 @@
 		}
 	],
 	"links": [
-		{ "source": "Note_2", "target": "Note_1", "strength": 0.9 },
-		{ "source": "Note_5", "target": "Note_4", "strength": 0.9 },
-		{ "source": "Note_6", "target": "Note_4", "strength": 0.9 }
+		{ "source": "Note_2", "target": "Note_1", "strength": 0.5, "value": 1 },
+		{ "source": "Note_5", "target": "Note_4", "strength": 0.5, "value": 1 },
+		{ "source": "Note_6", "target": "Note_4", "strength": 0.5, "value": 1 }
 	]
 }
